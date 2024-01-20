@@ -10,7 +10,7 @@ For mysql credentials check docker-compose.yml
 ## Inside:
 * php8.2
 * nginx
-* mysql(mariabd)
+* mysql(mariadb)
 * phpmyadmin
 * composer
 * artisan
@@ -45,4 +45,12 @@ docker compose stop
 docker compose rm
 sudo sh remove.sh
 sudo sh make.sh
+```
+
+Using services (examples):
+```bash
+docker compose run --rm artisan migrate
+docker compose run --rm npm install
+docker compose run --rm composer require laravel/ui
+...
 ```
