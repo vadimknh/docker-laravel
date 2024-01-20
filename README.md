@@ -2,6 +2,8 @@
 
 Docker compose services for laravel development. 
 
+For mysql credentials check docker-compose.yml 
+
 # Requiremenst:
 * Docker + docker compose
 
@@ -31,6 +33,10 @@ Now you can have full ready laravel in the src/ folder. You can develop.
 Docker stop:
 ```bash
 docker compose stop
+```
+Docker start after stopping:
+```bash
+docker compose up -d
 ```
 
 In case of total rebuild:
