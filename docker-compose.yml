@@ -3,6 +3,7 @@ version: '3'
 networks:
   laravel:
     name: laravel
+    external: true
 
 services:
   nginx:
