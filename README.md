@@ -28,11 +28,22 @@ Run make:
 sudo sh make.sh
 ```
 
-Now you can have full ready laravel in the src/ folder. You can develop.
+Now you can have full ready clean laravel app in the src/ folder. You can develop.
+
+In case to wrapp existing app:
+```bash
+# run wrap
+sudo sh wrap.sh
+# then move laravel app to /src/
+# comment in wrap.sh mkdir src and uncomment all others
+# run again wrap
+sudo sh wrap.sh
+```
 
 Docker stop:
 ```bash
 docker compose stop
+docker compose rm
 ```
 Docker start after stopping:
 ```bash
