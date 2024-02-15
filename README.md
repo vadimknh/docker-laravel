@@ -72,4 +72,6 @@ DB_HOST=db
 DB_PASSWORD=password
 ```
 
+Update .gitignore with ```docker-compose/mysql```
+
 Now you can have your laravel app in docker services and it's available on http://localhost
