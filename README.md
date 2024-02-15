@@ -11,7 +11,7 @@ Docker compose services for Laravel.
 
 Urls available after up docker services
 * localhost (:80) - ngnix
-* localhost:8080 - phpmyadmin
+* localhost:8080 - phpmyadmin (default credentials: db, root, password)
 
 ## Requiremenst:
 * Docker + docker compose
