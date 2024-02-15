@@ -1,67 +1,75 @@
-# docker-laravel-10
+# docker-laravel
 
-Docker compose services for laravel development. 
-
-For mysql credentials check docker-compose.yml 
-
-# Requiremenst:
-* Docker + docker compose
-
-## Inside:
+Docker compose services for Laravel. 
 * php8.2
 * nginx
-* mysql(mariadb)
-* phpmyadmin
+* mysql
+* phpmyadmin (if need, uncomment in the docker-compose.yml)
 * composer
 * artisan
 * node js
 
-## Urls and ports:
+Urls available after up docker services
 * localhost (:80) - ngnix
 * localhost:8080 - phpmyadmin
 
-## Usage
-Check params in make.sh.
+## Requiremenst:
+* Docker + docker compose
 
-Run make:
+## Use for new app
+
+Before make check services you need in the docker-compose.yml
+
+Make:
 ```bash
-sudo sh make.sh
+sh make.sh
 ```
 
-Now you can have full ready clean laravel app in the src/ folder. You can develop.
-
-In case to wrapp existing app:
+Update .env file
 ```bash
-# run wrap
-sudo sh wrap.sh
-# then move laravel app to /src/
-# comment in wrap.sh mkdir src and uncomment all others
-# run again wrap
-sudo sh wrap.sh
+DB_HOST=db
+DB_PASSWORD=password
 ```
 
-Docker stop:
+Now you have new laravel app in docker services and it's available on http://localhost
+
+Update .gitignore with ```docker-compose/mysql```
+
+Remove this git repo: ```rm -rf .git```
+Init new laravel app project repo: ```git init```
+
+Available commands:
 ```bash
 docker compose stop
 docker compose rm
-```
-Docker start after stopping:
-```bash
 docker compose up -d
+
+# Examples
+docker compose exec app php -v
+docker compose exec app node -v
+docker compose exec app composer -v
+docker compose exec app php artisan migrate
+docker compose exec app npm install
+docker compose exec app composer require laravel/ui
+docker compose exec app php artisan migrate
+docker compose exec app php artisan migrate
 ```
 
-In case of total rebuild:
+## Use for existing app
+
+Clone files in your project.
+
+Check services you need in the docker-compose.yml
+
+Make:
 ```bash
-docker compose stop
-docker compose rm
-sudo sh remove.sh
-sudo sh make.sh
+docker compose up -d --build
 ```
 
-Using services (examples):
+Update .env file
 ```bash
-docker compose run --rm artisan migrate
-docker compose run --rm npm install
-docker compose run --rm composer require laravel/ui
-...
+DB_HOST=db
+DB_PASSWORD=password
 ```
+
+Now you can have your laravel app in docker services and it's available on http://localhost

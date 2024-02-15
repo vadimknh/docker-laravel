@@ -1,96 +1,63 @@
 version: '3'
 
-networks:
-  laravel:
-    name: laravel
-    external: true
-
 services:
-  nginx:
+  app:
     build:
-      context: ./dockerfiles
-      dockerfile: nginx.dockerfile
+      args:
+        user: user
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: app
+    container_name: app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_USER: user
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/var/lib/mysql
+    networks:
+      - laravel
+
+  nginx:
+    image: nginx:1.17-alpine
     container_name: nginx
-    depends_on:
-      - php
-      - mysql
+    restart: unless-stopped
     ports:
       - 80:80
     volumes:
-      - ./src:/var/www/html
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
     networks:
       - laravel
+  
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin
+  #   ports:
+  #     - 8080:80
+  #   restart: always
+  #   environment:
+  #     PMA_ARBITRARY: 1
+  #     PMA_HOST: mysql
+  #   networks:
+  #     - laravel
 
-  php:
-    build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
-    container_name: php
-    volumes:
-      - ./src:/var/www/html
-    networks:
-      - laravel
-
-  mysql:
-    image: mariadb:10.6
-    container_name: mysql
-    ports:
-      - 3306:3306
-    volumes:
-      - ./mysql:/var/lib/mysql
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
-    networks:
-        - laravel
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    ports:
-      - 8080:80
-    restart: always
-    environment:
-      PMA_ARBITRARY: 1
-      PMA_HOST: mysql
-    depends_on:
-      - mysql
-      - php
-    networks:
-      - laravel
-
-  composer:
-    image: composer:latest
-    container_name: composer
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    depends_on:
-      - php
-    networks:
-      - laravel
-
-  artisan:
-    build:
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
-    container_name: artisan
-    depends_on:
-      - php
-    volumes:
-      - ./src:/var/www/html
-    entrypoint: [ 'php', 'artisan' ]
-    networks:
-      - laravel
-
-  npm:
-    image: node:current-alpine
-    container_name: npm
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    entrypoint: ['npm']
-    networks:
-      - laravel
+networks:
+  laravel:
+    driver: bridge
