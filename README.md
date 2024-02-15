@@ -52,7 +52,7 @@ docker compose exec app php artisan migrate
 docker compose exec app npm install
 docker compose exec app composer require laravel/ui
 docker compose exec app php artisan migrate
-docker compose exec app php artisan migrate
+docker compose exec app php artisan make:controller AdminController
 ```
 
 ## Use for existing app
