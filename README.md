@@ -25,10 +25,23 @@ Make:
 sh make.sh
 ```
 
-Update .env file
+Update .env
 ```bash
 DB_HOST=db
 DB_PASSWORD=password
+```
+
+Update vite.config.js
+```js
+export default defineConfig({
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        hmr: {
+            host: '127.0.0.1',
+        },
+    },
+    plugins: [ ...
 ```
 
 Now you have new laravel app in docker services and it's available on http://localhost
